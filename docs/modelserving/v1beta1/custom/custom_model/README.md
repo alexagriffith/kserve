@@ -132,6 +132,7 @@ class with replicas and in this case each model server is created as a python wo
 - `--http_port`: the http port model server is listening on, the default port is 8080 
 - `--max_buffer_size`: Max socker buffer size for tornado http client, the default limit is 10Mi.
 - `--max_asyncio_workers`: Max number of workers to spawn for python async io loop, by default it is `min(32,cpu.limit + 4)`
+-- `enable_latency_logging`: whether to log latency metrics per request, the default is False
 
 ### Environment Variables
 
