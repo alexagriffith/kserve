@@ -2,6 +2,9 @@ apiVersion: serving.kserve.io/v1alpha1
 kind: ClusterServingRuntime
 metadata:
   name: kserve-paddleserver
+  annotations:
+    prometheus.kc.io/port: '8080'
+    prometheus.kc.io/scrape: 'false'
 spec:
   supportedModelFormats:
     - name: paddle

@@ -2,6 +2,9 @@ apiVersion: serving.kserve.io/v1alpha1
 kind: ClusterServingRuntime
 metadata:
   name: kserve-torchserve
+  annotations:
+    prometheus.kc.io/port: '8082'
+    prometheus.kc.io/scrape: 'false'
 spec:
   supportedModelFormats:
     - name: pytorch

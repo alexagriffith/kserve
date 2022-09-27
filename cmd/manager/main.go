@@ -194,7 +194,6 @@ func main() {
 
 	log.Info("setting up webhook server")
 	hookServer := mgr.GetWebhookServer()
-
 	log.Info("registering webhooks to the webhook server")
 	hookServer.Register("/mutate-pods", &webhook.Admission{Handler: &pod.Mutator{}})
 
