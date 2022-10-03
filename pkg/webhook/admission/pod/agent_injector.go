@@ -207,7 +207,21 @@ func (ag *AgentInjector) InjectAgent(pod *v1.Pod) error {
 			copy(agentEnvs, container.Env)
 			queueProxyEnvs = container.Env
 			queueProxyAvailable = true
+
+			//TODO
+			// if pod annotation aggregate metrics is set (if default is set, remove this) & == true (may be bool value instead of string)
+			if val, ok := pod.ObjectMeta.Annotations[constants.EnableMetricAggregation]; ok && val == "true" {
+				// set new prometheus annotations (make sure this won't get overridden)
+				//TODO update vars /configs
+				queueProxyPrometheusPortAnnotation := "prometheus.io/port"
+				queueProxyPrometheusScrapeAnnotation := "prometheus.io/scrape"
+				queueProxyScrapePort := "9088"
+				pod.ObjectMeta.Annotations[queueProxyPrometheusPortAnnotation] = queueProxyScrapePort
+				//TODO: necessary to  set this?
+				pod.ObjectMeta.Annotations[queueProxyPrometheusScrapeAnnotation] = "true"
+			}
 		}
+		//set env var to port
 
 		if container.Name == "kserve-container" {
 

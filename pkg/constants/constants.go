@@ -77,6 +77,7 @@ var (
 	MinScaleAnnotationKey                       = KnativeAutoscalingAPIGroupName + "/minScale"
 	MaxScaleAnnotationKey                       = KnativeAutoscalingAPIGroupName + "/maxScale"
 	RollOutDurationAnnotationKey                = KnativeServingAPIGroupName + "/rollout-duration"
+	EnableMetricAggregation                     = KServeAPIGroupName + "/enable-metric-aggregation"
 )
 
 // InferenceService Internal Annotations

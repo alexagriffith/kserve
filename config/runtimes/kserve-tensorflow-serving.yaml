@@ -3,8 +3,7 @@ kind: ClusterServingRuntime
 metadata:
   name: kserve-tensorflow-serving
   annotations:
-    prometheus.kc.io/port: '9153'
-    prometheus.kc.io/scrape: 'false'
+    prometheus.kserve.io/port: '9153'
 spec:
   supportedModelFormats:
     - name: tensorflow
