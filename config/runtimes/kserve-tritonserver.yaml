@@ -2,10 +2,9 @@ apiVersion: serving.kserve.io/v1alpha1
 kind: ClusterServingRuntime
 metadata:
   name: kserve-tritonserver
+spec:
   annotations:
     prometheus.kc.io/port: '8002'
-    prometheus.kc.io/scrape: 'false'
-spec:
   supportedModelFormats:
     - name: tensorrt
       version: "8"

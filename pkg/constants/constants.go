@@ -78,6 +78,8 @@ var (
 	MaxScaleAnnotationKey                       = KnativeAutoscalingAPIGroupName + "/maxScale"
 	RollOutDurationAnnotationKey                = KnativeServingAPIGroupName + "/rollout-duration"
 	EnableMetricAggregation                     = KServeAPIGroupName + "/enable-metric-aggregation"
+	KserveContainerPrometheusPort               = "prometheus.kserve.io/port"
+	SetPrometheusAggregateAnnotation            = KServeAPIGroupName + "/set-prometheus-aggregate-annotation"
 )
 
 // InferenceService Internal Annotations
@@ -177,9 +179,11 @@ const (
 
 // InferenceService Environment Variables
 const (
-	CustomSpecStorageUriEnvVarKey       = "STORAGE_URI"
-	CustomSpecProtocolEnvVarKey         = "PROTOCOL"
-	CustomSpecMultiModelServerEnvVarKey = "MULTI_MODEL_SERVER"
+	CustomSpecStorageUriEnvVarKey              = "STORAGE_URI"
+	CustomSpecProtocolEnvVarKey                = "PROTOCOL"
+	CustomSpecMultiModelServerEnvVarKey        = "MULTI_MODEL_SERVER"
+	KServeContainerPrometheusPortEnvVarKey     = "KSERVE_CONTAINER_PROMETHEUS_PORT"
+	QueueProxyAggregatePrometheusPortEnvVarKey = "AGGREGATE_PROMETHEUS_PORT"
 )
 
 type InferenceServiceComponent string

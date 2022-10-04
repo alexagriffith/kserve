@@ -4,6 +4,7 @@ metadata:
   name: torchserve-transformer
   annotations:
     serving.kserve.io/enable-metric-aggregation: "true"
+    serving.kserve.io/set-prometheus-aggregate-annotation: "true"
 spec:
   transformer:
     containers:

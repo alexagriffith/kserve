@@ -2,9 +2,9 @@ apiVersion: serving.kserve.io/v1alpha1
 kind: ClusterServingRuntime
 metadata:
   name: kserve-tensorflow-serving
+spec:
   annotations:
     prometheus.kserve.io/port: '9153'
-spec:
   supportedModelFormats:
     - name: tensorflow
       version: "1"
