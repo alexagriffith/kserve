@@ -23,10 +23,10 @@ import (
 
 const (
 	defaultPrometheusPort          = "8080"
-	prometheusPortAnnotationKey    = "prometheus.io/port"
-	prometheusPathAnnotationKey    = "prometheus.io/path"
-	prometheusPathAnnotationValue  = "/metrics"
-	queueProxyAggregateMetricsPort = "9088"
+	PrometheusPortAnnotationKey    = "prometheus.io/port"
+	PrometheusPathAnnotationKey    = "prometheus.io/path"
+	PrometheusPathAnnotationValue  = "/metrics"
+	QueueProxyAggregateMetricsPort = "9088"
 )
 
 // InjectMetricsAggregator looks for the annotations to enable aggregate kserve-container and queue-proxy metrics and
@@ -46,13 +46,13 @@ func InjectMetricsAggregator(pod *v1.Pod) error {
 				// so that it knows which port to scrape from the kserve-container.
 				pod.Spec.Containers[i].Env = append(pod.Spec.Containers[i].Env, v1.EnvVar{Name: constants.KServeContainerPrometheusPortEnvVarKey, Value: kserveContainerPromPort})
 				// Set the port that queue-proxy will use to expose the aggregate metrics.
-				pod.Spec.Containers[i].Env = append(pod.Spec.Containers[i].Env, v1.EnvVar{Name: constants.QueueProxyAggregatePrometheusPortEnvVarKey, Value: queueProxyAggregateMetricsPort})
+				pod.Spec.Containers[i].Env = append(pod.Spec.Containers[i].Env, v1.EnvVar{Name: constants.QueueProxyAggregatePrometheusPortEnvVarKey, Value: QueueProxyAggregateMetricsPort})
 
 				// If SetPrometheusAggregateAnnotation is true, the pod annotations for prometheus port and path will be set. The scrape annotation is not set,
 				// that is left for the user to configure.
 				if setPromAnnotation, ok := pod.ObjectMeta.Annotations[constants.SetPrometheusAggregateAnnotation]; ok && setPromAnnotation == "true" {
-					pod.ObjectMeta.Annotations[prometheusPortAnnotationKey] = queueProxyAggregateMetricsPort
-					pod.ObjectMeta.Annotations[prometheusPathAnnotationKey] = prometheusPathAnnotationValue
+					pod.ObjectMeta.Annotations[PrometheusPortAnnotationKey] = QueueProxyAggregateMetricsPort
+					pod.ObjectMeta.Annotations[PrometheusPathAnnotationKey] = PrometheusPathAnnotationValue
 				}
 			}
 		}
