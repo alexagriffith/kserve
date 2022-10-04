@@ -21,13 +21,12 @@ import (
 	"fmt"
 	"strings"
 
-	"k8s.io/apimachinery/pkg/util/intstr"
-
 	"github.com/kserve/kserve/pkg/apis/serving/v1beta1"
 	"github.com/kserve/kserve/pkg/constants"
 	"github.com/kserve/kserve/pkg/credentials"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
+	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
 const (
@@ -121,6 +120,20 @@ func (ag *AgentInjector) InjectAgent(pod *v1.Pod) error {
 	_, injectPuller := pod.ObjectMeta.Annotations[constants.AgentShouldInjectAnnotationKey]
 	_, injectBatcher := pod.ObjectMeta.Annotations[constants.BatcherInternalAnnotationKey]
 
+	log.Info("INSIDE INJECT AGENT")
+	for i, container := range pod.Spec.Containers {
+		if container.Name == "queue-proxy" {
+			log.Info("INSIDE QP\n\n\n")
+			if val, ok := pod.ObjectMeta.Annotations[constants.EnableMetricAggregation]; ok && val == "true" {
+				// set new prometheus annotations (make sure this won't get overridden)
+				//TODO update vars /configs
+				//TODO: get from cluster serving runtime
+				log.Info(fmt.Sprintf("adding env var to %v", pod.Spec.Containers[i].Name))
+				pod.Spec.Containers[i].Env = append(container.Env, v1.EnvVar{Name: "KSERVE_CONTAINER_PROM_PORT", Value: "8080"})
+			}
+		}
+	}
+
 	if !injectLogger && !injectPuller && !injectBatcher {
 		return nil
 	}
@@ -203,25 +216,12 @@ func (ag *AgentInjector) InjectAgent(pod *v1.Pod) error {
 	queueProxyAvailable := false
 	for _, container := range pod.Spec.Containers {
 		if container.Name == "queue-proxy" {
+			log.Info("2nd one -in QP!!!!!!\n\n\n")
 			agentEnvs = make([]v1.EnvVar, len(container.Env))
 			copy(agentEnvs, container.Env)
 			queueProxyEnvs = container.Env
 			queueProxyAvailable = true
-
-			//TODO
-			// if pod annotation aggregate metrics is set (if default is set, remove this) & == true (may be bool value instead of string)
-			if val, ok := pod.ObjectMeta.Annotations[constants.EnableMetricAggregation]; ok && val == "true" {
-				// set new prometheus annotations (make sure this won't get overridden)
-				//TODO update vars /configs
-				queueProxyPrometheusPortAnnotation := "prometheus.io/port"
-				queueProxyPrometheusScrapeAnnotation := "prometheus.io/scrape"
-				queueProxyScrapePort := "9088"
-				pod.ObjectMeta.Annotations[queueProxyPrometheusPortAnnotation] = queueProxyScrapePort
-				//TODO: necessary to  set this?
-				pod.ObjectMeta.Annotations[queueProxyPrometheusScrapeAnnotation] = "true"
-			}
 		}
-		//set env var to port
 
 		if container.Name == "kserve-container" {
 

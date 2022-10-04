@@ -211,6 +211,7 @@ docker-push:
 
 docker-build-agent:
 	docker build -f agent.Dockerfile . -t ${KO_DOCKER_REPO}/${AGENT_IMG}
+	docker build -f agent.Dockerfile . -t ${KO_DOCKER_REPO}/${AGENT_IMG}
 
 docker-build-router:
 	docker build -f router.Dockerfile . -t ${KO_DOCKER_REPO}/${ROUTER_IMG}

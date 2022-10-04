@@ -62,6 +62,7 @@ func (mutator *Mutator) Handle(ctx context.Context, req admission.Request) admis
 	// For some reason pod namespace is always empty when coming to pod mutator, need to set from admission request
 	pod.Namespace = req.AdmissionRequest.Namespace
 
+	log.Info("MUTATOR in mutator.go")
 	if err := mutator.mutate(pod, configMap); err != nil {
 		log.Error(err, "Failed to mutate pod", "name", pod.Labels[constants.InferenceServicePodLabelKey])
 		return admission.Errored(http.StatusInternalServerError, err)
@@ -111,6 +112,7 @@ func (mutator *Mutator) mutate(pod *v1.Pod, configMap *v1.ConfigMap) error {
 		batcherConfig:     batcherConfig,
 	}
 
+	log.Info("iterating mutators")
 	mutators := []func(pod *v1.Pod) error{
 		InjectGKEAcceleratorSelector,
 		storageInitializer.InjectStorageInitializer,

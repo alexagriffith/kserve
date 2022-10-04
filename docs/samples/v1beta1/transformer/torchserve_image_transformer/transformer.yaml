@@ -2,10 +2,12 @@ apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
   name: torchserve-transformer
+  annotations:
+    serving.kserve.io/enable-metric-aggregation: "true"
 spec:
   transformer:
     containers:
-    - image: kserve/torchserve-image-transformer:latest
+    - image: docker.io/agriffith96/test:image_transformer3
       name: kfserving-container
       env:
         - name: STORAGE_URI
