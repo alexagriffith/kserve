@@ -4,7 +4,7 @@ metadata:
   name: kserve-lgbserver
 spec:
   annotations:
-    prometheus.kc.io/port: '8080'
+    prometheus.kserve.io/port: '8080'
   supportedModelFormats:
     - name: lightgbm
       version: "2"
